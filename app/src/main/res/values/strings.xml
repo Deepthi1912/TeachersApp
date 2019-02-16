@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TeachersApp</string>
+    <string name="start_survey">Start</string>
+    <string name="open_student">Students</string>
+    <string name="open_latecomers">Latecomers</string>
+    <string name="who_is_who">Who is who?</string>
+    <string name="open_stats">Statistics</string>
+</resources>
