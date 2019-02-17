@@ -28,4 +28,7 @@ public interface StudentDao {
 
     @Delete
     void delete (Student student);
+
+    @Delete
+    void deleteAll (Student... students);
 }

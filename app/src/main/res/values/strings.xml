@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">TeachersApp</string>
     <string name="start_survey">Start</string>
-    <string name="open_student">Students</string>
+    <string name="students">Students</string>
     <string name="open_latecomers">Latecomers</string>
     <string name="who_is_who">Who is who?</string>
     <string name="open_stats">Statistics</string>
+    <string name="choose_photo">Choose student\'s photo</string>
+    <string name="enter_name">Enter student\'s name</string>
+    <string name="add_student">Add student</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="add">Add</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="data_input_failed">You must choose photo and type either first or last name to save the student!</string>
 </resources>
