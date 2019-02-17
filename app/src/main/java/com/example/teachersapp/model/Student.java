@@ -1,39 +1,33 @@
-package com.example.teachersapp;
+package com.example.teachersapp.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.MediaStore;
 
-import com.example.teachersapp.activity.StudentsActivity;
-
-import java.io.IOException;
-
-@Entity
+@Entity(tableName = "student")
 public class Student implements Parcelable {
     @PrimaryKey (autoGenerate = true)
     private int id;
-    @ColumnInfo(name = "name")
-    private String name;
+    @ColumnInfo(name = "first_name")
+    private String firstName;
+    @ColumnInfo(name = "last_name")
+    private String lastName;
     @ColumnInfo (name = "photo_uri")
     private String photoUri;
     @ColumnInfo (name = "score")
     private int score;
 
-    public Student(String name, String photoUri) {
-        this.name = name;
+    public Student(String firstName, String lastName, String photoUri) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.photoUri = photoUri;
     }
 
     protected Student(Parcel in) {
-        name = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
         score = in.readInt();
         photoUri = in.readString();
     }
@@ -80,20 +74,16 @@ public class Student implements Parcelable {
         this.score = score;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getPhotoUri() {
         return photoUri;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUri = photoUrl;
     }
 
     @Override
@@ -103,7 +93,8 @@ public class Student implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
         dest.writeInt(score);
         dest.writeString(photoUri);
     }

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.open_student_list_button).setOnClickListener(v -> {
-            Intent i = new Intent(this, StudentsActivity.class);
+            Intent i = new Intent(MainActivity.this, StudentsActivity.class);
             startActivity(i);
         });
     }

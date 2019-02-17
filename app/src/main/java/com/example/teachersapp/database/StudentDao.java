@@ -1,10 +1,13 @@
-package com.example.teachersapp;
+package com.example.teachersapp.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
+import com.example.teachersapp.model.Student;
 
 import java.util.List;
 
@@ -12,13 +15,7 @@ import java.util.List;
 public interface StudentDao {
 
     @Query("SELECT * FROM student")
-    List<Student> getAll();
-
-    @Query("SELECT * FROM student WHERE name LIKE :name LIMIT 1")
-    Student findByName(String name);
-
-    @Insert
-    void insertAll(List<Student> students);
+    LiveData<List<Student>> getAll();
 
     @Insert
     void insert(Student student);
@@ -29,6 +26,7 @@ public interface StudentDao {
     @Delete
     void delete (Student student);
 
-    @Delete
-    void deleteAll (Student... students);
+    @Query("DELETE FROM student")
+    void deleteAll();
+
 }
