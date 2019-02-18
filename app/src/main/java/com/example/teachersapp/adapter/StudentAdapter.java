@@ -43,6 +43,9 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return students.size();
     }
 
+    public Student getContactOnPosition(int position) {
+        return students.get(position);
+    }
 
     public class StudentViewHolder extends RecyclerView.ViewHolder {
         ImageView photo;
@@ -54,14 +57,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             name = itemView.findViewById(R.id.student_card_name);
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onStudentClick(students.get(getAdapterPosition()));
+                    listener.onStudentClick(students.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }
     }
 
     public interface OnStudentClickListener {
-        void onStudentClick(Student student);
+        void onStudentClick(Student student, int position);
     }
 
     public void setOnStudentClickListener(OnStudentClickListener listener) {

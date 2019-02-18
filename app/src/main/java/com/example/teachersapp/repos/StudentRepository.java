@@ -29,7 +29,7 @@ public class StudentRepository {
     }
 
     public void delete (Student student) {
-        new DeleteAllStudentsAsyncTask(studentDao).execute(student);
+        new DeleteStudentAsyncTask(studentDao).execute(student);
     }
 
     public void deleteAllStudents() {

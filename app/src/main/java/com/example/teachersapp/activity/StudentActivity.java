@@ -3,10 +3,9 @@ package com.example.teachersapp.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DialogTitle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StudentActivity extends AppCompatActivity {
     private static final String TAG = "StudentActivity";
@@ -35,7 +36,7 @@ public class StudentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
         getSupportActionBar().setTitle(R.string.student_info);
 
         firstName = findViewById(R.id.student_firstname);
@@ -63,14 +64,31 @@ public class StudentActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_student:
-//                editStudent();
+                editStudent();
                 return true;
             case R.id.action_delete_student:
-//                deleteStudent();
+                deleteStudent();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deleteStudent() {
+        AlertDialog confirmationDialog = new AlertDialog.Builder(StudentActivity.this)
+                .setMessage(R.string.delete_student_q)
+                .setPositiveButton(R.string.delete, (dialog, which) -> {
+                    setResult(RESULT_OK);
+                    finish();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))
+                .create();
+        confirmationDialog.show();
+    }
+
+    private void editStudent() {
+        // TODO: AddEditStudentActivity
     }
 
     private Bitmap getImageBitmap(String url) {

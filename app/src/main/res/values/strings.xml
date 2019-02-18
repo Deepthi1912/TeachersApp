@@ -18,5 +18,10 @@
     <string name="student_info">Student info</string>
     <string name="delete_all">Delete all</string>
     <string name="student_saved">Student saved</string>
+    <string name="student_deleted">Student deleted</string>
+    <string name="all_students_deleted">All students deleted</string>
+    <string name="delete_student_q">Delete student?</string>
+    <string name="delete_all_students_q">Delete all students?</string>
+    <string name="cancel">Cancel</string>
     <string name="data_input_failed">You must choose photo and type either first or last name to save the student!</string>
 </resources>
