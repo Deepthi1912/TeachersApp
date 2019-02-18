@@ -100,7 +100,11 @@ public class StudentListActivity extends AppCompatActivity {
                 .setMessage(R.string.delete_all_students_q)
                 .setPositiveButton(R.string.delete, (dialog, which) -> {
                     studentViewModel.deleteAllStudents();
-                    Toast.makeText(StudentListActivity.this, R.string.all_students_deleted, Toast.LENGTH_SHORT).show();
+                    if (adapter.getItemCount() > 0) {
+                        Toast.makeText(StudentListActivity.this, R.string.all_students_deleted, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(StudentListActivity.this, R.string.list_is_empty, Toast.LENGTH_SHORT).show();
+                    }
                     dialog.dismiss();
                 })
                 .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))

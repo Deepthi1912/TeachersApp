@@ -23,5 +23,6 @@
     <string name="delete_student_q">Delete student?</string>
     <string name="delete_all_students_q">Delete all students?</string>
     <string name="cancel">Cancel</string>
+    <string name="list_is_empty">List is empty</string>
     <string name="data_input_failed">You must choose photo and type either first or last name to save the student!</string>
 </resources>
