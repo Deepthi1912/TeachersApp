@@ -49,4 +49,5 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    implementation 'com.android.support:mediarouter-v7:27.1.1'
 }

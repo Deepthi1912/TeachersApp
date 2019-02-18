@@ -16,6 +16,7 @@ public class Student implements Parcelable {
     private String lastName;
     @ColumnInfo (name = "photo_uri")
     private String photoUri;
+    // TODO: fix image loading bug
     @ColumnInfo (name = "score")
     private int score;
 
@@ -23,6 +24,7 @@ public class Student implements Parcelable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.photoUri = photoUri;
+        this.score = 0;
     }
 
     protected Student(Parcel in) {

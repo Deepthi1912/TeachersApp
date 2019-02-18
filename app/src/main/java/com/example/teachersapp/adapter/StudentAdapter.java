@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
-
     private List<Student> students = new ArrayList<>();
+    private OnStudentClickListener listener;
 
-    public void setStudents (List<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
         notifyDataSetChanged();
     }
@@ -52,8 +52,20 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             super(itemView);
             photo = itemView.findViewById(R.id.student_card_photo);
             name = itemView.findViewById(R.id.student_card_name);
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    listener.onStudentClick(students.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
+    public interface OnStudentClickListener {
+        void onStudentClick(Student student);
+    }
+
+    public void setOnStudentClickListener(OnStudentClickListener listener) {
+        this.listener = listener;
+    }
 
 }

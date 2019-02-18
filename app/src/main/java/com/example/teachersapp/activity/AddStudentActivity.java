@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.teachersapp.database.StudentDatabase;
 import com.example.teachersapp.R;
-import com.example.teachersapp.model.Student;
 
 import java.util.Objects;
 
@@ -37,7 +33,7 @@ public class AddStudentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_student);
+        setContentView(R.layout.activity_add_student);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.add_student);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
@@ -62,7 +58,7 @@ public class AddStudentActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_student:
+            case R.id.action_save_student:
                 saveStudent();
                 return true;
             default:
@@ -102,8 +98,13 @@ public class AddStudentActivity extends AppCompatActivity {
             switch (requestCode) {
                 case GALLERY_REQUEST_CODE:
                     selectedImageUri = data.getData();
-                    ((ImageButton) findViewById(R.id.photo_imageButton)).setImageURI(selectedImageUri);
-                    isImageSelected = true;
+                    if (selectedImageUri != null) {
+                        Log.d(TAG, "pickedURI == " + selectedImageUri);
+                        ((ImageButton) findViewById(R.id.photo_imageButton)).setImageURI(selectedImageUri);
+                        isImageSelected = true;
+                    } else {
+                        Log.d(TAG, "pickedURI == null");
+                    }
                     break;
             }
         }

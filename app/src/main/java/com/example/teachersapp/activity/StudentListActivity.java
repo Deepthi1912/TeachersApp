@@ -21,7 +21,7 @@ import com.example.teachersapp.viewmodel.StudentViewModel;
 import java.util.Objects;
 
 public class StudentListActivity extends AppCompatActivity {
-    public static final int ADD_NOTE_REQUEST = 1;
+    public static final int ADD_STUDENT_REQUEST = 1;
     private static final String STATE_KEY = "students_activity";
     private static final String TAG = "StudentListActivity";
 
@@ -41,24 +41,29 @@ public class StudentListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
         adapter = new StudentAdapter();
+        adapter.setOnStudentClickListener(student -> {
+            Intent i = new Intent(StudentListActivity.this, StudentActivity.class);
+            i.putExtra(Student.class.getCanonicalName(), student);
+            startActivity(i);
+        });
+
         recyclerView.setAdapter(adapter);
         studentViewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
         studentViewModel.getAllStudents().observe(this, students -> {
             adapter.setStudents(students);
-//            adapter.notifyDataSetChanged();
         });
 
         findViewById(R.id.add_student_fab).setOnClickListener(v -> {
             Log.d(TAG, "FAB: pressed!");
             Intent i = new Intent(StudentListActivity.this, AddStudentActivity.class);
-            startActivityForResult(i, ADD_NOTE_REQUEST);
+            startActivityForResult(i, ADD_STUDENT_REQUEST);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_NOTE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == ADD_STUDENT_REQUEST && resultCode == RESULT_OK) {
             String firstName = data.getStringExtra(AddStudentActivity.EXTRA_FIRST_NAME);
             String lastName = data.getStringExtra(AddStudentActivity.EXTRA_LAST_NAME);
             String photoUri = data.getStringExtra(AddStudentActivity.EXTRA_PHOTO_URI);
@@ -78,7 +83,7 @@ public class StudentListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete:
+            case R.id.action_delete_all_students:
                 studentViewModel.deleteAllStudents();
         }
         return super.onOptionsItemSelected(item);
