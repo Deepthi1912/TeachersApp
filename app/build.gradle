@@ -50,4 +50,3 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
 }
-

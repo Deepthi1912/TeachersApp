@@ -5,10 +5,12 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.teachersapp.R;
 import com.example.teachersapp.model.Student;
 
 import java.util.Random;
@@ -35,6 +37,8 @@ public abstract class StudentDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateDbAsyncTask(instance).execute();
+
+
         }
     };
 
@@ -46,7 +50,7 @@ public abstract class StudentDatabase extends RoomDatabase {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            // Here we can populate db when it's being initialized
+            // pre-populate database
             return null;
         }
     }

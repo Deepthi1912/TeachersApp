@@ -1,6 +1,5 @@
 package com.example.teachersapp.adapter;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +21,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     public void setStudents (List<Student> students) {
         this.students = students;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -50,8 +50,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
         public StudentViewHolder(View itemView) {
             super(itemView);
-            photo = itemView.findViewById(R.id.student_photo);
-            name = itemView.findViewById(R.id.student_name);
+            photo = itemView.findViewById(R.id.student_card_photo);
+            name = itemView.findViewById(R.id.student_card_name);
         }
     }
 
