@@ -3,6 +3,7 @@ package com.example.teachersapp.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.teachersapp.R;
 import com.example.teachersapp.model.Student;
@@ -26,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StudentActivity extends AppCompatActivity {
     private static final String TAG = "StudentActivity";
+    public static final int EDIT_STUDENT_REQUEST = 3;
     private TextView firstName;
     private TextView lastName;
     private TextView score;
@@ -45,11 +48,7 @@ public class StudentActivity extends AppCompatActivity {
         photo = findViewById(R.id.student_photo);
         Intent i = getIntent();
         student = i.getParcelableExtra(Student.class.getCanonicalName());
-        firstName.setText(student.getFirstName());
-        lastName.setText(student.getLastName());
-        score.setText(String.valueOf(student.getScore()));
-        photo.setImageBitmap(getImageBitmap(student.getPhotoUri()));
-        Log.d(TAG, "loaded imageURI == " + student.getPhotoUri());
+        editView(student);
 
     }
 
@@ -89,9 +88,35 @@ public class StudentActivity extends AppCompatActivity {
 
     private void editStudent() {
         // TODO: AddEditStudentActivity
+        Intent i = new Intent(StudentActivity.this, AddEditStudentActivity.class);
+        i.putExtra(Student.class.getCanonicalName(), student);
+        startActivityForResult(i, EDIT_STUDENT_REQUEST);
     }
 
-    private Bitmap getImageBitmap(String url) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_STUDENT_REQUEST && resultCode == RESULT_OK) {
+            student = data.getParcelableExtra(Student.class.getCanonicalName());
+            editView(student);
+            Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
+            Intent i = new Intent();
+            i.putExtra(Student.class.getCanonicalName(), student);
+            setResult(RESULT_OK, i);
+        }
+    }
+
+    private void editView(Student student) {
+        firstName.setText(student.getFirstName());
+        lastName.setText(student.getLastName());
+        score.setText(String.valueOf(student.getScore()));
+//        photo.setImageBitmap(getImageBitmap(student.getPhotoUri()));
+        photo.setImageURI(Uri.parse(student.getPhotoUri()));
+        Log.d(TAG, "loaded imageURI == " + student.getPhotoUri());
+
+    }
+
+    /*private Bitmap getImageBitmap(String url) {
         Bitmap bm = null;
         try {
 
@@ -107,5 +132,5 @@ public class StudentActivity extends AppCompatActivity {
             Log.e(TAG, "Error getting bitmap", e);
         }
         return bm;
-    }
+    }*/
 }

@@ -24,7 +24,9 @@ import java.util.Objects;
 public class StudentListActivity extends AppCompatActivity {
     public static final int ADD_STUDENT_REQUEST = 1;
     public static final int DELETE_STUDENT_REQUEST = 2;
+    public static final int EDIT_STUDENT_REQUEST = 3;
     private static final String TAG = "StudentListActivity";
+    private static final int EDIT_OR_DELETE_STUDENT_REQUEST = 4;
 
     private StudentViewModel studentViewModel;
 
@@ -46,7 +48,7 @@ public class StudentListActivity extends AppCompatActivity {
             selectedContactPosition = position;
             Intent i = new Intent(StudentListActivity.this, StudentActivity.class);
             i.putExtra(Student.class.getCanonicalName(), student);
-            startActivityForResult(i, DELETE_STUDENT_REQUEST);
+            startActivityForResult(i, EDIT_OR_DELETE_STUDENT_REQUEST);
         });
 
         recyclerView.setAdapter(adapter);
@@ -55,7 +57,7 @@ public class StudentListActivity extends AppCompatActivity {
 
         findViewById(R.id.add_student_fab).setOnClickListener(v -> {
             Log.d(TAG, "FAB: pressed!");
-            Intent i = new Intent(StudentListActivity.this, AddStudentActivity.class);
+            Intent i = new Intent(StudentListActivity.this, AddEditStudentActivity.class);
             startActivityForResult(i, ADD_STUDENT_REQUEST);
         });
     }
@@ -64,17 +66,17 @@ public class StudentListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            String firstName = data.getStringExtra(AddStudentActivity.EXTRA_FIRST_NAME);
-            String lastName = data.getStringExtra(AddStudentActivity.EXTRA_LAST_NAME);
-            String photoUri = data.getStringExtra(AddStudentActivity.EXTRA_PHOTO_URI);
-            Student student = new Student(firstName, lastName, photoUri);
-            studentViewModel.insert(student);
+            studentViewModel.insert(data.getParcelableExtra(Student.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_saved, Toast.LENGTH_SHORT).show();
-        }
-        if (requestCode == DELETE_STUDENT_REQUEST && resultCode == RESULT_OK) {
+        } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK && data != null && data.hasExtra(Student.class.getCanonicalName())) {
+            studentViewModel.update(data.getParcelableExtra(Student.class.getCanonicalName()));
+            Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
+        } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK) {
             studentViewModel.delete(adapter.getContactOnPosition(selectedContactPosition));
             Toast.makeText(this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     @Override

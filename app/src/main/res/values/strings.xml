@@ -25,4 +25,6 @@
     <string name="cancel">Cancel</string>
     <string name="list_is_empty">List is empty</string>
     <string name="data_input_failed">You must choose photo and type either first or last name to save the student!</string>
+    <string name="edit_student">Edit student</string>
+    <string name="student_updated">Student updated</string>
 </resources>

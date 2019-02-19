@@ -22,7 +22,7 @@
             android:name=".activity.StudentListActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".activity.AddStudentActivity"
+            android:name=".activity.AddEditStudentActivity"
             android:parentActivityName=".activity.StudentListActivity" />
         <activity
             android:name=".activity.StudentActivity"

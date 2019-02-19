@@ -20,18 +20,31 @@ public class Student implements Parcelable {
     @ColumnInfo (name = "score")
     private int score;
 
-    public Student(String firstName, String lastName, String photoUri) {
+    public Student(String firstName, String lastName, String photoUri, int score) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.photoUri = photoUri;
-        this.score = 0;
+        this.score = score;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 
     protected Student(Parcel in) {
+        id = in.readInt();
         firstName = in.readString();
         lastName = in.readString();
-        score = in.readInt();
         photoUri = in.readString();
+        score = in.readInt();
     }
 
     public static final Creator<Student> CREATOR = new Creator<Student>() {
@@ -95,9 +108,10 @@ public class Student implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeInt(score);
         dest.writeString(photoUri);
+        dest.writeInt(score);
     }
 }
