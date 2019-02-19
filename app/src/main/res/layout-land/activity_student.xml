@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -11,15 +12,13 @@
         android:id="@+id/student_photo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="12dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:foregroundGravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/student" />
@@ -28,58 +27,60 @@
         android:id="@+id/student_firstname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="14dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:foregroundGravity="center"
         android:gravity="center"
+        android:hint="@string/first_name"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toTopOf="@+id/student_lastname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.100000024"
+        app:layout_constraintStart_toStartOf="@+id/student_lastname"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/student_lastname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="14dp"
+        android:layout_width="170dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:foregroundGravity="center"
         android:gravity="center"
+        android:hint="@string/last_name"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toTopOf="@+id/student_score"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/student_score"
         app:layout_constraintTop_toBottomOf="@+id/student_firstname" />
 
     <TextView
         android:id="@+id/student_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="14dp"
+        android:layout_margin="12dp"
         android:drawableStart="@drawable/ic_star"
         android:foregroundGravity="center"
         android:gravity="center"
+        android:hint="@string/score"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/student_lastname" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        android:layout_marginStart="8dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="@string/first_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/student_firstname"
+        app:layout_constraintStart_toStartOf="@+id/student_firstname" />
 
     <TextView
         android:id="@+id/textView5"
@@ -95,20 +96,6 @@
         app:layout_constraintStart_toStartOf="@+id/student_lastname" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:foregroundGravity="center"
-        android:gravity="center"
-        android:text="@string/first_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textSize="14sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/student_firstname"
-        app:layout_constraintStart_toStartOf="@+id/student_firstname" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -120,5 +107,12 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/student_score"
         app:layout_constraintStart_toStartOf="@+id/student_score" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
 
 </android.support.constraint.ConstraintLayout>

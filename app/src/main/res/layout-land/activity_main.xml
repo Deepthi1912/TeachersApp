@@ -10,28 +10,24 @@
         android:id="@+id/start_survey_button"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/start_survey"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintBottom_toTopOf="@+id/open_student_list_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
         android:id="@+id/open_student_list_button"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/students"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintBottom_toTopOf="@+id/open_latecomers_list_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_survey_button" />
 
@@ -39,13 +35,11 @@
         android:id="@+id/open_latecomers_list_button"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/open_latecomers"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintBottom_toTopOf="@+id/who_is_who_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/open_student_list_button" />
 
@@ -53,13 +47,11 @@
         android:id="@+id/who_is_who_button"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/who_is_who"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintBottom_toTopOf="@+id/open_stats_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/open_latecomers_list_button" />
 
@@ -67,13 +59,11 @@
         android:id="@+id/open_stats_button"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/open_stats"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/who_is_who_button" />
 </android.support.constraint.ConstraintLayout>
