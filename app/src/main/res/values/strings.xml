@@ -27,4 +27,7 @@
     <string name="data_input_failed">You must choose photo and type either first or last name to save the student!</string>
     <string name="edit_student">Edit student</string>
     <string name="student_updated">Student updated</string>
+    <string name="deleted">Deleted</string>
+    <string name="title_activity_new_student_list">NewStudentListActivity</string>
+    <string name="undo">Undo</string>
 </resources>

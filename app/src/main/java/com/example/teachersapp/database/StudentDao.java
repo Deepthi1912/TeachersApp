@@ -29,4 +29,6 @@ public interface StudentDao {
     @Query("DELETE FROM student")
     void deleteAll();
 
+    @Insert
+    void insert(List<Student> students);
 }

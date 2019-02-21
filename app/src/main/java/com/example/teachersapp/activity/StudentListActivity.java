@@ -20,19 +20,20 @@ import com.example.teachersapp.R;
 import com.example.teachersapp.adapter.StudentAdapter;
 import com.example.teachersapp.model.Student;
 import com.example.teachersapp.viewmodel.StudentViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
 import java.util.Objects;
 
 // TODO: provide possibility to cancel deleting a student by swipe (and deleting all students?)
 public class StudentListActivity extends AppCompatActivity {
     public static final int ADD_STUDENT_REQUEST = 1;
-    public static final int DELETE_STUDENT_REQUEST = 2;
-    public static final int EDIT_STUDENT_REQUEST = 3;
     private static final String TAG = "StudentListActivity";
     private static final int EDIT_OR_DELETE_STUDENT_REQUEST = 4;
 
     private StudentViewModel studentViewModel;
-
+    private List<Student> cachedStudents;
+    private Student cachedStudent;
     private StudentAdapter adapter;
     private int selectedContactPosition;
 
@@ -72,8 +73,7 @@ public class StudentListActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                studentViewModel.delete(adapter.getContactAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(StudentListActivity.this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
+                deleteStudent(adapter.getStudentAt(viewHolder.getAdapterPosition()));
             }
         }).attachToRecyclerView(recyclerView);
     }
@@ -82,14 +82,13 @@ public class StudentListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            studentViewModel.insert(data.getParcelableExtra(Student.class.getCanonicalName()));
+            studentViewModel.insert((Student) data.getParcelableExtra(Student.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_saved, Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK && data != null && data.hasExtra(Student.class.getCanonicalName())) {
             studentViewModel.update(data.getParcelableExtra(Student.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            studentViewModel.delete(adapter.getContactAt(selectedContactPosition));
-            Toast.makeText(this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
+            deleteStudent(adapter.getStudentAt(selectedContactPosition));
         }
 
 
@@ -118,8 +117,23 @@ public class StudentListActivity extends AppCompatActivity {
             AlertDialog confirmationDialog = new AlertDialog.Builder(StudentListActivity.this)
                     .setMessage(R.string.delete_all_students_q)
                     .setPositiveButton(R.string.delete, (dialog, which) -> {
+                        cachedStudents= studentViewModel.getAllStudents().getValue();
                         studentViewModel.deleteAllStudents();
-                        Toast.makeText(StudentListActivity.this, R.string.all_students_deleted, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(R.id.students_coordinator_layout), R.string.deleted, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.undo, v -> {
+                                studentViewModel.insert(cachedStudents);
+                                Objects.requireNonNull(cachedStudents).clear();
+                            })
+                        .addCallback(new Snackbar.Callback() {
+                            @Override
+                            public void onDismissed(Snackbar transientBottomBar, int event) {
+                                super.onDismissed(transientBottomBar, event);
+                                if (event != DISMISS_EVENT_ACTION)
+                                    Toast.makeText(StudentListActivity.this, R.string.all_students_deleted, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+
                         dialog.dismiss();
                     })
                     .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))
@@ -128,8 +142,26 @@ public class StudentListActivity extends AppCompatActivity {
         } else {
             Toast.makeText(StudentListActivity.this, R.string.list_is_empty, Toast.LENGTH_SHORT).show();
         }
-
     }
+
+    private void deleteStudent(Student student) {
+        studentViewModel.delete(student);
+        Snackbar.make(findViewById(R.id.students_coordinator_layout), R.string.deleted, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> {
+                    studentViewModel.insert(student);
+                })
+                .addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        super.onDismissed(transientBottomBar, event);
+                        if (event != DISMISS_EVENT_ACTION)
+                            Toast.makeText(StudentListActivity.this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+
+
 
 
 }

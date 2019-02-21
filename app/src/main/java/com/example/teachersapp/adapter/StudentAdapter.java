@@ -53,7 +53,7 @@ public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentV
         holder.photo.setImageURI(Uri.parse(currentStudent.getPhotoUri()));
     }
 
-    public Student getContactAt(int position) {
+    public Student getStudentAt(int position) {
         return getItem(position);
     }
 

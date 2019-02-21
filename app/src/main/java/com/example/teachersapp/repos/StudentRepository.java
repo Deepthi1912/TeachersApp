@@ -8,6 +8,7 @@ import com.example.teachersapp.database.StudentDao;
 import com.example.teachersapp.database.StudentDatabase;
 import com.example.teachersapp.model.Student;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class StudentRepository {
@@ -38,6 +39,10 @@ public class StudentRepository {
 
     public LiveData<List<Student>> getAllStudents() {
         return allStudents;
+    }
+
+    public void insert(List<Student> students) {
+        new InsertStudentsAsyncTask(studentDao).execute(students.toArray(new Student[]{}));
     }
 
     private static class InsertStudentAsyncTask extends AsyncTask<Student, Void, Void> {
@@ -96,4 +101,16 @@ public class StudentRepository {
         }
     }
 
+    private class InsertStudentsAsyncTask extends AsyncTask<Student, Void, Void>{
+        private StudentDao studentDao;
+        public InsertStudentsAsyncTask(StudentDao studentDao) {
+            this.studentDao = studentDao;
+        }
+
+        @Override
+        protected Void doInBackground(Student... students) {
+            studentDao.insert(Arrays.asList(students));
+            return null;
+        }
+    }
 }

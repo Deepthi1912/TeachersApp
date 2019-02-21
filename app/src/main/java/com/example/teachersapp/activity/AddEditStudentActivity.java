@@ -25,16 +25,8 @@ import java.util.Objects;
 
 public class AddEditStudentActivity extends AppCompatActivity {
     private static final String TAG = "AddEditStudentActivity";
-    private static final int ADD_STUDENT_REQUEST = 1;
-    private static final int EDIT_STUDENT_REQUEST = 3;
     private static final int PICK_FROM_GALLERY_REQUEST = 5;
-    public static final String EXTRA_ID = "com.example.teachersapp.EXTRA_ID";
-    public static final String EXTRA_FIRST_NAME = "com.example.teachersapp.EXTRA_FIRST_NAME";
-    public static final String EXTRA_LAST_NAME = "com.example.teachersapp.EXTRA_LAST_NAME";
-    public static final String EXTRA_PHOTO_URI = "com.example.teachersapp.EXTRA_PHOTO_URI";
-    private static final String EXTRA_SCORE = "com.example.teachersapp.EXTRA_SCORE";
     public static final String SAVE_STATE = "com.example.teachersapp.AddEditStudentActivity";
-
 
     private TextInputEditText firstName;
     private TextInputEditText lastName;
