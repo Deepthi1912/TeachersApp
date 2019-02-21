@@ -2,6 +2,9 @@ package com.example.teachersapp.adapter;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.AsyncDifferConfig;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +18,28 @@ import com.example.teachersapp.model.Student;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
-    private List<Student> students = new ArrayList<>();
+public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentViewHolder>{
+
+    private static final DiffUtil.ItemCallback<Student> DIFF_CALLBACK = new DiffUtil.ItemCallback<Student>() {
+        @Override
+        public boolean areItemsTheSame(Student oldItem, Student newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(Student oldItem, Student newItem) {
+            return oldItem.getFirstName().equals(newItem.getFirstName())
+                    && oldItem.getLastName().equals(newItem.getLastName())
+                    && oldItem.getPhotoUri().equals(newItem.getPhotoUri())
+                    && oldItem.getScore() == newItem.getScore();
+        }
+    };
     private OnStudentClickListener listener;
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
-        notifyDataSetChanged();
+    public StudentAdapter() {
+        super(DIFF_CALLBACK);
     }
+
 
     @NonNull
     @Override
@@ -34,17 +51,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     @Override
     public void onBindViewHolder(@NonNull StudentViewHolder holder, int position) {
-        holder.name.setText(new StringBuilder().append(students.get(position).getFirstName()).append(" ").append(students.get(position).getLastName()));
-        holder.photo.setImageURI(Uri.parse(students.get(position).getPhotoUri()));
+        Student currentStudent = getItem(position);
+        holder.name.setText(new StringBuilder().append(currentStudent.getFirstName()).append(" ").append(currentStudent.getLastName()));
+        holder.photo.setImageURI(Uri.parse(currentStudent.getPhotoUri()));
     }
 
-    @Override
-    public int getItemCount() {
-        return students.size();
-    }
-
-    public Student getContactOnPosition(int position) {
-        return students.get(position);
+    public Student getContactAt(int position) {
+        return getItem(position);
     }
 
     public class StudentViewHolder extends RecyclerView.ViewHolder {
@@ -57,7 +70,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             name = itemView.findViewById(R.id.student_card_name);
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    listener.onStudentClick(students.get(getAdapterPosition()), getAdapterPosition());
+                    listener.onStudentClick(getItem(getAdapterPosition()), getAdapterPosition());
                 }
             });
         }

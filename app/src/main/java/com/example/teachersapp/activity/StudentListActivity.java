@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.example.teachersapp.viewmodel.StudentViewModel;
 
 import java.util.Objects;
 
+// TODO: provide possibility to cancel deleting a student by swipe (and deleting all students?)
 public class StudentListActivity extends AppCompatActivity {
     public static final int ADD_STUDENT_REQUEST = 1;
     public static final int DELETE_STUDENT_REQUEST = 2;
@@ -44,7 +46,7 @@ public class StudentListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
         adapter = new StudentAdapter();
-        adapter.setOnStudentClickListener((student, position) -> {
+        adapter.setOnStudentClickListener((Student student, int position) -> {
             selectedContactPosition = position;
             Intent i = new Intent(StudentListActivity.this, StudentActivity.class);
             i.putExtra(Student.class.getCanonicalName(), student);
@@ -53,13 +55,26 @@ public class StudentListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         studentViewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
-        studentViewModel.getAllStudents().observe(this, students -> adapter.setStudents(students));
+        studentViewModel.getAllStudents().observe(this, students -> adapter.submitList(students));
 
         findViewById(R.id.add_student_fab).setOnClickListener(v -> {
             Log.d(TAG, "FAB: pressed!");
             Intent i = new Intent(StudentListActivity.this, AddEditStudentActivity.class);
             startActivityForResult(i, ADD_STUDENT_REQUEST);
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                studentViewModel.delete(adapter.getContactAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(StudentListActivity.this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -72,7 +87,7 @@ public class StudentListActivity extends AppCompatActivity {
             studentViewModel.update(data.getParcelableExtra(Student.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            studentViewModel.delete(adapter.getContactOnPosition(selectedContactPosition));
+            studentViewModel.delete(adapter.getContactAt(selectedContactPosition));
             Toast.makeText(this, R.string.student_deleted, Toast.LENGTH_SHORT).show();
         }
 
@@ -98,20 +113,21 @@ public class StudentListActivity extends AppCompatActivity {
     }
 
     private void deleteAllStudents() {
-        AlertDialog confirmationDialog = new AlertDialog.Builder(StudentListActivity.this)
-                .setMessage(R.string.delete_all_students_q)
-                .setPositiveButton(R.string.delete, (dialog, which) -> {
-                    studentViewModel.deleteAllStudents();
-                    if (adapter.getItemCount() > 0) {
+        if (adapter.getItemCount() > 0) {
+            AlertDialog confirmationDialog = new AlertDialog.Builder(StudentListActivity.this)
+                    .setMessage(R.string.delete_all_students_q)
+                    .setPositiveButton(R.string.delete, (dialog, which) -> {
+                        studentViewModel.deleteAllStudents();
                         Toast.makeText(StudentListActivity.this, R.string.all_students_deleted, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(StudentListActivity.this, R.string.list_is_empty, Toast.LENGTH_SHORT).show();
-                    }
-                    dialog.dismiss();
-                })
-                .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))
-                .create();
-        confirmationDialog.show();
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))
+                    .create();
+            confirmationDialog.show();
+        } else {
+            Toast.makeText(StudentListActivity.this, R.string.list_is_empty, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
