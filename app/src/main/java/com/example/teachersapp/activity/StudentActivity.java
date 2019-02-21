@@ -1,11 +1,9 @@
 package com.example.teachersapp.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,13 +16,7 @@ import android.widget.Toast;
 import com.example.teachersapp.R;
 import com.example.teachersapp.model.Student;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StudentActivity extends AppCompatActivity {
     private static final String TAG = "StudentActivity";

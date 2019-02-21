@@ -1,11 +1,11 @@
 package com.example.teachersapp.adapter;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.recyclerview.extensions.AsyncDifferConfig;
-import android.support.v7.recyclerview.extensions.ListAdapter;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.example.teachersapp.R;
 import com.example.teachersapp.model.Student;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentViewHolder>{
 

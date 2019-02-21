@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.textfield.TextInputEditText;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +34,7 @@ public class AddEditStudentActivity extends AppCompatActivity {
     public static final String EXTRA_PHOTO_URI = "com.example.teachersapp.EXTRA_PHOTO_URI";
     private static final String EXTRA_SCORE = "com.example.teachersapp.EXTRA_SCORE";
     public static final String SAVE_STATE = "com.example.teachersapp.AddEditStudentActivity";
-    ;
+
 
     private TextInputEditText firstName;
     private TextInputEditText lastName;
@@ -117,8 +119,8 @@ public class AddEditStudentActivity extends AppCompatActivity {
     }
 
     private void saveStudent() {
-        String firstName = this.firstName.getText().toString();
-        String lastName = this.lastName.getText().toString();
+        String firstName = Objects.requireNonNull(this.firstName.getText()).toString();
+        String lastName = Objects.requireNonNull(this.lastName.getText()).toString();
         int score = Integer.parseInt(this.score.getText().toString());
         if (!isImageSelected || (firstName.trim().isEmpty() && lastName.trim().isEmpty())) {
             Toast.makeText(this, R.string.data_input_failed, Toast.LENGTH_SHORT).show();
@@ -189,7 +191,7 @@ public class AddEditStudentActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SAVE_STATE, score.getText().toString());
     }
