@@ -70,7 +70,7 @@
         android:foreground="@drawable/ic_insert_photo"
         android:foregroundGravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/student"
+        app:srcCompat="@drawable/student"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"

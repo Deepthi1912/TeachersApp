@@ -14,36 +14,24 @@ public class Student implements Parcelable {
     private String firstName;
     @ColumnInfo(name = "last_name")
     private String lastName;
-    @ColumnInfo (name = "photo_uri")
-    private String photoUri;
+    @ColumnInfo (name = "photo")
+    private byte[] photo;
     // TODO: fix image loading bug
     @ColumnInfo (name = "score")
     private int score;
 
-    public Student(String firstName, String lastName, String photoUri, int score) {
+    public Student(String firstName, String lastName, byte[] photo, int score) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.photoUri = photoUri;
+        this.photo = photo;
         this.score = score;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setPhotoUri(String photoUri) {
-        this.photoUri = photoUri;
     }
 
     protected Student(Parcel in) {
         id = in.readInt();
         firstName = in.readString();
         lastName = in.readString();
-        photoUri = in.readString();
+        photo = in.createByteArray();
         score = in.readInt();
     }
 
@@ -59,18 +47,16 @@ public class Student implements Parcelable {
         }
     };
 
-
-    public void addScore() {
-        score++;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public boolean divideScore() {
-        if (score >= 1) {
-            score--;
-            return true;
-        } else {
-            return false;
-        }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public int getId() {
@@ -97,9 +83,10 @@ public class Student implements Parcelable {
         return lastName;
     }
 
-    public String getPhotoUri() {
-        return photoUri;
+    public byte[] getPhoto() {
+        return photo;
     }
+
 
     @Override
     public int describeContents() {
@@ -111,7 +98,7 @@ public class Student implements Parcelable {
         dest.writeInt(id);
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeString(photoUri);
+        dest.writeByteArray(photo);
         dest.writeInt(score);
     }
 }

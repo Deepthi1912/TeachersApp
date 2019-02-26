@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.example.teachersapp.model.Student;
 
-@Database(entities = {Student.class}, version = 3)
+@Database(entities = {Student.class}, version = 4)
 public abstract class StudentDatabase extends RoomDatabase {
 
     private static StudentDatabase instance;

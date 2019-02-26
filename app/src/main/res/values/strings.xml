@@ -12,6 +12,7 @@
     <string name="last_name">Last name</string>
     <string name="score">Score</string>
     <string name="add">Add</string>
+    <string name="name">Name</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -30,4 +31,12 @@
     <string name="deleted">Deleted</string>
     <string name="title_activity_new_student_list">NewStudentListActivity</string>
     <string name="undo">Undo</string>
+    <string name="set_image">Set image</string>
+    <string name="title_activity_survey">SurveyActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="survey">Survey</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
 </resources>

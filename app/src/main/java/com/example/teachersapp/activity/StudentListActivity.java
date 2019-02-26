@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.teachersapp.R;
-import com.example.teachersapp.adapter.StudentAdapter;
+import com.example.teachersapp.adapter.StudentListAdapter;
 import com.example.teachersapp.model.Student;
 import com.example.teachersapp.viewmodel.StudentViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,20 +34,20 @@ public class StudentListActivity extends AppCompatActivity {
     private StudentViewModel studentViewModel;
     private List<Student> cachedStudents;
     private Student cachedStudent;
-    private StudentAdapter adapter;
+    private StudentListAdapter adapter;
     private int selectedContactPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.students);
+    Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.students);
 
         RecyclerView recyclerView = findViewById(R.id.student_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
-        adapter = new StudentAdapter();
+        adapter = new StudentListAdapter();
         adapter.setOnStudentClickListener((Student student, int position) -> {
             selectedContactPosition = position;
             Intent i = new Intent(StudentListActivity.this, StudentActivity.class);

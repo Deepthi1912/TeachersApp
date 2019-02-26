@@ -1,14 +1,21 @@
 package com.example.teachersapp.activity;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +33,16 @@ public class StudentActivity extends AppCompatActivity {
     private TextView score;
     private ImageView photo;
     private Student student;
+    private ImageView enlargedPhoto;
+    private ConstraintLayout layout;
+
+    @Override
+    public void onBackPressed() {
+        if (enlargedPhoto.getVisibility() == View.VISIBLE)
+            enlargedPhoto.setVisibility(View.INVISIBLE);
+        else
+            super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +51,31 @@ public class StudentActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_close);
         getSupportActionBar().setTitle(R.string.student_info);
 
+        layout = findViewById(R.id.student_layout);
         firstName = findViewById(R.id.student_firstname);
         lastName = findViewById(R.id.student_lastname);
         score = findViewById(R.id.student_score);
         photo = findViewById(R.id.student_photo);
+        enlargedPhoto = findViewById(R.id.student_photo_big);
+
         Intent i = getIntent();
         student = i.getParcelableExtra(Student.class.getCanonicalName());
         editView(student);
+
+        photo.setOnClickListener(v -> {
+            enlargedPhoto.setImageBitmap(BitmapFactory.decodeByteArray(student.getPhoto(), 0, student.getPhoto().length));
+            enlargedPhoto.setVisibility(View.VISIBLE);
+        });
+
+        layout.setOnClickListener(v -> {
+            enlargedPhoto.setVisibility(View.INVISIBLE);
+        });
+
+        enlargedPhoto.setOnClickListener(v -> {
+            if (enlargedPhoto.getVisibility() == View.VISIBLE) {
+                enlargedPhoto.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 
@@ -53,6 +88,7 @@ public class StudentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        enlargedPhoto.setVisibility(View.INVISIBLE);
         switch (item.getItemId()) {
             case R.id.action_edit_student:
                 editStudent();
@@ -102,27 +138,12 @@ public class StudentActivity extends AppCompatActivity {
         firstName.setText(student.getFirstName());
         lastName.setText(student.getLastName());
         score.setText(String.valueOf(student.getScore()));
-//        photo.setImageBitmap(getImageBitmap(student.getPhotoUri()));
-        photo.setImageURI(Uri.parse(student.getPhotoUri()));
-        Log.d(TAG, "loaded imageURI == " + student.getPhotoUri());
-
+        photo.setImageBitmap(BitmapFactory.decodeByteArray(student.getPhoto(), 0, student.getPhoto().length));
     }
 
-    /*private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting bitmap", e);
-        }
-        return bm;
-    }*/
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        enlargedPhoto.setVisibility(View.INVISIBLE);
+    }
 }

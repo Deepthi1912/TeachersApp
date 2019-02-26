@@ -1,8 +1,8 @@
 package com.example.teachersapp.adapter;
 
-import android.net.Uri;
+import android.graphics.BitmapFactory;
+
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.example.teachersapp.R;
 import com.example.teachersapp.model.Student;
 
-public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentViewHolder>{
+import java.util.Arrays;
+
+public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder>{
 
     private static final DiffUtil.ItemCallback<Student> DIFF_CALLBACK = new DiffUtil.ItemCallback<Student>() {
         @Override
@@ -27,13 +29,13 @@ public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentV
         public boolean areContentsTheSame(Student oldItem, Student newItem) {
             return oldItem.getFirstName().equals(newItem.getFirstName())
                     && oldItem.getLastName().equals(newItem.getLastName())
-                    && oldItem.getPhotoUri().equals(newItem.getPhotoUri())
+                    && Arrays.equals(oldItem.getPhoto(), newItem.getPhoto())
                     && oldItem.getScore() == newItem.getScore();
         }
     };
     private OnStudentClickListener listener;
 
-    public StudentAdapter() {
+    public StudentListAdapter() {
         super(DIFF_CALLBACK);
     }
 
@@ -50,7 +52,7 @@ public class StudentAdapter extends ListAdapter<Student, StudentAdapter.StudentV
     public void onBindViewHolder(@NonNull StudentViewHolder holder, int position) {
         Student currentStudent = getItem(position);
         holder.name.setText(new StringBuilder().append(currentStudent.getFirstName()).append(" ").append(currentStudent.getLastName()));
-        holder.photo.setImageURI(Uri.parse(currentStudent.getPhotoUri()));
+        holder.photo.setImageBitmap(BitmapFactory.decodeByteArray(currentStudent.getPhoto(), 0, currentStudent.getPhoto().length));
     }
 
     public Student getStudentAt(int position) {
