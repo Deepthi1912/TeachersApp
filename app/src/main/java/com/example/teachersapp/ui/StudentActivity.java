@@ -1,9 +1,7 @@
-package com.example.teachersapp.activity;
+package com.example.teachersapp.ui;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -11,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teachersapp.R;
-import com.example.teachersapp.model.Student;
+import com.example.teachersapp.db.entity.StudentEntity;
 
 import java.util.Objects;
 
@@ -32,7 +29,7 @@ public class StudentActivity extends AppCompatActivity {
     private TextView lastName;
     private TextView score;
     private ImageView photo;
-    private Student student;
+    private StudentEntity student;
     private ImageView enlargedPhoto;
     private ConstraintLayout layout;
 
@@ -59,7 +56,7 @@ public class StudentActivity extends AppCompatActivity {
         enlargedPhoto = findViewById(R.id.student_photo_big);
 
         Intent i = getIntent();
-        student = i.getParcelableExtra(Student.class.getCanonicalName());
+        student = i.getParcelableExtra(StudentEntity.class.getCanonicalName());
         editView(student);
 
         photo.setOnClickListener(v -> {
@@ -101,6 +98,10 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: СДЕЛАТЬ ФРАГМЕНТ ДАИЛОГА ДЛЯ УДАЛЕНИЯ (DialogFragment)
+    // Ответные действия диалога ловис с помощью интерфейса handleDialogListener, которые расширяет активити
+    // такие диалоги переживают изменение конфигурации устройства
+    // можно использовать метод saveInstanceState
     private void deleteStudent() {
         AlertDialog confirmationDialog = new AlertDialog.Builder(StudentActivity.this)
                 .setMessage(R.string.delete_student_q)
@@ -117,7 +118,7 @@ public class StudentActivity extends AppCompatActivity {
     private void editStudent() {
         // TODO: AddEditStudentActivity
         Intent i = new Intent(StudentActivity.this, AddEditStudentActivity.class);
-        i.putExtra(Student.class.getCanonicalName(), student);
+        i.putExtra(StudentEntity.class.getCanonicalName(), student);
         startActivityForResult(i, EDIT_STUDENT_REQUEST);
     }
 
@@ -125,16 +126,16 @@ public class StudentActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            student = data.getParcelableExtra(Student.class.getCanonicalName());
+            student = data.getParcelableExtra(StudentEntity.class.getCanonicalName());
             editView(student);
             Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
             Intent i = new Intent();
-            i.putExtra(Student.class.getCanonicalName(), student);
+            i.putExtra(StudentEntity.class.getCanonicalName(), student);
             setResult(RESULT_OK, i);
         }
     }
 
-    private void editView(Student student) {
+    private void editView(StudentEntity student) {
         firstName.setText(student.getFirstName());
         lastName.setText(student.getLastName());
         score.setText(String.valueOf(student.getScore()));

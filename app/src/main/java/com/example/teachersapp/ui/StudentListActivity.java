@@ -1,4 +1,4 @@
-package com.example.teachersapp.activity;
+package com.example.teachersapp.ui;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,8 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.teachersapp.R;
-import com.example.teachersapp.adapter.StudentListAdapter;
-import com.example.teachersapp.model.Student;
+import com.example.teachersapp.db.entity.StudentEntity;
 import com.example.teachersapp.viewmodel.StudentViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -32,8 +31,8 @@ public class StudentListActivity extends AppCompatActivity {
     private static final int EDIT_OR_DELETE_STUDENT_REQUEST = 4;
 
     private StudentViewModel studentViewModel;
-    private List<Student> cachedStudents;
-    private Student cachedStudent;
+    private List<StudentEntity> cachedStudents;
+    private StudentEntity cachedStudent;
     private StudentListAdapter adapter;
     private int selectedContactPosition;
 
@@ -41,21 +40,22 @@ public class StudentListActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_list);
-    Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.students);
-
+        setTitle(R.string.students);
         RecyclerView recyclerView = findViewById(R.id.student_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
         adapter = new StudentListAdapter();
-        adapter.setOnStudentClickListener((Student student, int position) -> {
+        adapter.setOnStudentClickListener((StudentEntity student, int position) -> {
             selectedContactPosition = position;
             Intent i = new Intent(StudentListActivity.this, StudentActivity.class);
-            i.putExtra(Student.class.getCanonicalName(), student);
+            i.putExtra(StudentEntity.class.getCanonicalName(), student);
             startActivityForResult(i, EDIT_OR_DELETE_STUDENT_REQUEST);
         });
 
         recyclerView.setAdapter(adapter);
+
+        // можно засунуть в один метод initViewModel.
         studentViewModel = ViewModelProviders.of(this).get(StudentViewModel.class);
         studentViewModel.getAllStudents().observe(this, students -> adapter.submitList(students));
 
@@ -82,10 +82,10 @@ public class StudentListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_STUDENT_REQUEST && resultCode == RESULT_OK) {
-            studentViewModel.insert((Student) data.getParcelableExtra(Student.class.getCanonicalName()));
+            studentViewModel.insert((StudentEntity) data.getParcelableExtra(StudentEntity.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_saved, Toast.LENGTH_SHORT).show();
-        } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK && data != null && data.hasExtra(Student.class.getCanonicalName())) {
-            studentViewModel.update(data.getParcelableExtra(Student.class.getCanonicalName()));
+        } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK && data != null && data.hasExtra(StudentEntity.class.getCanonicalName())) {
+            studentViewModel.update(data.getParcelableExtra(StudentEntity.class.getCanonicalName()));
             Toast.makeText(this, R.string.student_updated, Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_OR_DELETE_STUDENT_REQUEST && resultCode == RESULT_OK) {
             deleteStudent(adapter.getStudentAt(selectedContactPosition));
@@ -144,7 +144,7 @@ public class StudentListActivity extends AppCompatActivity {
         }
     }
 
-    private void deleteStudent(Student student) {
+    private void deleteStudent(StudentEntity student) {
         studentViewModel.delete(student);
         Snackbar.make(findViewById(R.id.students_coordinator_layout), R.string.deleted, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, v -> {

@@ -1,4 +1,4 @@
-package com.example.teachersapp.database;
+package com.example.teachersapp.db.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.teachersapp.db.entity.StudentEntity;
 import com.example.teachersapp.model.Student;
 
 import java.util.List;
@@ -15,20 +16,21 @@ import java.util.List;
 public interface StudentDao {
 
     @Query("SELECT * FROM student")
-    LiveData<List<Student>> getAll();
+    LiveData<List<StudentEntity>> getAll();
 
     @Insert
-    void insert(Student student);
+    void insert(StudentEntity student);
 
     @Update
-    void update (Student student);
+    void update (StudentEntity student);
 
     @Delete
-    void delete (Student student);
+    void delete (StudentEntity student);
 
     @Query("DELETE FROM student")
     void deleteAll();
 
     @Insert
-    void insert(List<Student> students);
+    void insert(List<StudentEntity> students);
+
 }

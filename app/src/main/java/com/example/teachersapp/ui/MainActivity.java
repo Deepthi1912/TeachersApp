@@ -1,11 +1,10 @@
-package com.example.teachersapp.activity;
+package com.example.teachersapp.ui;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.teachersapp.R;
-import com.example.teachersapp.SurveyFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.teachersapp.activity;
+package com.example.teachersapp.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -33,7 +33,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.teachersapp.model.Student;
+import com.example.teachersapp.db.entity.StudentEntity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -60,7 +60,7 @@ public class AddEditStudentActivity extends AppCompatActivity {
     private boolean isImageChanged = false;
     private boolean isImageSelected = false;
     private boolean isDefaultImageSelected = true;
-    private Student editableStudent;
+    private StudentEntity editableStudent;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
     private Bitmap thumbnail;
@@ -81,16 +81,16 @@ public class AddEditStudentActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        if (i.hasExtra(Student.class.getCanonicalName())) {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.edit_student);
-            editableStudent = i.getParcelableExtra(Student.class.getCanonicalName());
+        if (i.hasExtra(StudentEntity.class.getCanonicalName())) {
+            setTitle(R.string.edit_student);
+            editableStudent = i.getParcelableExtra(StudentEntity.class.getCanonicalName());
             firstName.setText(editableStudent.getFirstName());
             lastName.setText(editableStudent.getLastName());
             photoButton.setImageBitmap(BitmapFactory.decodeByteArray(editableStudent.getPhoto(), 0, editableStudent.getPhoto().length));
             isImageSelected = true;
             score.setText(String.valueOf(editableStudent.getScore()));
         } else {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.add_student);
+            setTitle(R.string.add_student);
         }
 
         photoButton.setOnClickListener(v -> {
@@ -147,9 +147,9 @@ public class AddEditStudentActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (getIntent().hasExtra(Student.class.getCanonicalName())) {
+                if (getIntent().hasExtra(StudentEntity.class.getCanonicalName())) {
                     Intent i = new Intent(AddEditStudentActivity.this, StudentActivity.class);
-                    i.putExtra(Student.class.getCanonicalName(), (Student) getIntent().getParcelableExtra(Student.class.getCanonicalName()));
+                    i.putExtra(StudentEntity.class.getCanonicalName(), (StudentEntity) getIntent().getParcelableExtra(StudentEntity.class.getCanonicalName()));
                     NavUtils.navigateUpTo(this, i);
                 } else {
                     NavUtils.navigateUpTo(this, Objects.requireNonNull(getParentActivityIntent()));
@@ -258,15 +258,15 @@ public class AddEditStudentActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
             }
             data = baos.toByteArray();
-            if (getIntent().hasExtra(Student.class.getCanonicalName()) && data.length != 0) {
+            if (getIntent().hasExtra(StudentEntity.class.getCanonicalName()) && data.length != 0) {
                 editableStudent.setFirstName(firstName);
                 editableStudent.setLastName(lastName);
                 if (isImageChanged)
                     editableStudent.setPhoto(data);
                 editableStudent.setScore(score);
-                i.putExtra(Student.class.getCanonicalName(), editableStudent);
+                i.putExtra(StudentEntity.class.getCanonicalName(), editableStudent);
             } else if (data.length != 0){
-                i.putExtra(Student.class.getCanonicalName(), new Student(firstName, lastName, data, score));
+                i.putExtra(StudentEntity.class.getCanonicalName(), new StudentEntity(firstName, lastName, data, score));
             }
 
             setResult(RESULT_OK, i);
@@ -330,7 +330,6 @@ public class AddEditStudentActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 progressBar.dismiss();
-                ;
             }
         }).start();
     }

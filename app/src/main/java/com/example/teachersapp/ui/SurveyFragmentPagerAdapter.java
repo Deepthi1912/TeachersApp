@@ -1,21 +1,17 @@
-package com.example.teachersapp.adapter;
+package com.example.teachersapp.ui;
 
-import com.example.teachersapp.SurveyFragment;
-import com.example.teachersapp.model.Student;
-import com.example.teachersapp.viewmodel.StudentViewModel;
+import com.example.teachersapp.db.entity.StudentEntity;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.LiveData;
 
 public class SurveyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<Student> students;
+    private List<StudentEntity> students;
 
     public SurveyFragmentPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
@@ -32,7 +28,7 @@ public class SurveyFragmentPagerAdapter extends FragmentStatePagerAdapter {
         return students.size();
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(List<StudentEntity> students) {
         this.students = students;
     }
 }

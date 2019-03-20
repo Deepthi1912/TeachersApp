@@ -1,4 +1,4 @@
-package com.example.teachersapp.database;
+package com.example.teachersapp.db;
 
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
@@ -8,21 +8,27 @@ import android.content.Context;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 
-import com.example.teachersapp.model.Student;
+import com.example.teachersapp.db.entity.StudentEntity;
+import com.example.teachersapp.db.dao.StudentDao;
 
-@Database(entities = {Student.class}, version = 4)
-public abstract class StudentDatabase extends RoomDatabase {
-
-    private static StudentDatabase instance;
+@Database(entities = {StudentEntity.class}, version = 4)
+public abstract class AppDatabase extends RoomDatabase {
+    public static final String DATABASE_NAME = "app_db.db";
+    private static volatile AppDatabase instance;
+    private static final Object LOCK = new Object();
 
     public abstract StudentDao studentDAO();
 
-    public static synchronized StudentDatabase getInstance(Context context) {
+    public static AppDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(), StudentDatabase.class, "database")
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build();
+            synchronized (LOCK) {
+                if (instance == null) {
+                    instance = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .addCallback(roomCallback)
+                            .build();
+                }
+            }
         }
         return instance;
     }
@@ -32,15 +38,13 @@ public abstract class StudentDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateDbAsyncTask(instance).execute();
-
-
         }
     };
 
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private StudentDao studentDao;
 
-        public PopulateDbAsyncTask(StudentDatabase db) {
+        public PopulateDbAsyncTask(AppDatabase db) {
             this.studentDao = db.studentDAO();
         }
         @Override

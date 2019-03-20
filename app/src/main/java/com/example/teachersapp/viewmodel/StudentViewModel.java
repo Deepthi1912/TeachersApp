@@ -5,14 +5,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
 
-import com.example.teachersapp.model.Student;
-import com.example.teachersapp.repos.StudentRepository;
+import com.example.teachersapp.db.entity.StudentEntity;
+import com.example.teachersapp.db.repos.StudentRepository;
 
 import java.util.List;
 
 public class StudentViewModel extends AndroidViewModel {
     private StudentRepository repository;
-    private LiveData<List<Student>> allStudents;
+    private LiveData<List<StudentEntity>> allStudents;
 
     public StudentViewModel(@NonNull Application application) {
         super(application);
@@ -20,17 +20,17 @@ public class StudentViewModel extends AndroidViewModel {
         allStudents = repository.getAllStudents();
     }
 
-    public void insert(Student student) {
+    public void insert(StudentEntity student) {
         repository.insert(student);
     }
 
-    public void insert(List<Student> students) { repository.insert(students); }
+    public void insert(List<StudentEntity> students) { repository.insert(students); }
 
-    public void update(Student student) {
+    public void update(StudentEntity student) {
         repository.update(student);
     }
 
-    public void delete(Student student) {
+    public void delete(StudentEntity student) {
         repository.delete(student);
     }
 
@@ -38,7 +38,8 @@ public class StudentViewModel extends AndroidViewModel {
         repository.deleteAllStudents();
     }
 
-    public LiveData<List<Student>> getAllStudents() {
+    public LiveData<List<StudentEntity>> getAllStudents() {
         return allStudents;
     }
+
 }

@@ -17,8 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SurveyActivity"></activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".ui.SurveyActivity"></activity>
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,14 +26,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.StudentListActivity"
+            android:name=".ui.StudentListActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".activity.AddEditStudentActivity"
-            android:parentActivityName=".activity.StudentListActivity" />
+            android:name=".ui.AddEditStudentActivity"
+            android:parentActivityName=".ui.StudentListActivity" />
         <activity
-            android:name=".activity.StudentActivity"
-            android:parentActivityName=".activity.StudentListActivity" />
+            android:name=".ui.StudentActivity"
+            android:parentActivityName=".ui.StudentListActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

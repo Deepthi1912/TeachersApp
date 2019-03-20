@@ -1,4 +1,4 @@
-package com.example.teachersapp.adapter;
+package com.example.teachersapp.ui;
 
 import android.graphics.BitmapFactory;
 
@@ -13,20 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.teachersapp.R;
-import com.example.teachersapp.model.Student;
+import com.example.teachersapp.db.entity.StudentEntity;
 
 import java.util.Arrays;
 
-public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.StudentViewHolder>{
+public class StudentListAdapter extends ListAdapter<StudentEntity, StudentListAdapter.StudentViewHolder>{
 
-    private static final DiffUtil.ItemCallback<Student> DIFF_CALLBACK = new DiffUtil.ItemCallback<Student>() {
+    private static final DiffUtil.ItemCallback<StudentEntity> DIFF_CALLBACK = new DiffUtil.ItemCallback<StudentEntity>() {
         @Override
-        public boolean areItemsTheSame(Student oldItem, Student newItem) {
+        public boolean areItemsTheSame(StudentEntity oldItem, StudentEntity newItem) {
             return oldItem.getId() == newItem.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(Student oldItem, Student newItem) {
+        public boolean areContentsTheSame(StudentEntity oldItem, StudentEntity newItem) {
             return oldItem.getFirstName().equals(newItem.getFirstName())
                     && oldItem.getLastName().equals(newItem.getLastName())
                     && Arrays.equals(oldItem.getPhoto(), newItem.getPhoto())
@@ -50,12 +50,12 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull StudentViewHolder holder, int position) {
-        Student currentStudent = getItem(position);
+        StudentEntity currentStudent = getItem(position);
         holder.name.setText(new StringBuilder().append(currentStudent.getFirstName()).append(" ").append(currentStudent.getLastName()));
         holder.photo.setImageBitmap(BitmapFactory.decodeByteArray(currentStudent.getPhoto(), 0, currentStudent.getPhoto().length));
     }
 
-    public Student getStudentAt(int position) {
+    public StudentEntity getStudentAt(int position) {
         return getItem(position);
     }
 
@@ -76,7 +76,7 @@ public class StudentListAdapter extends ListAdapter<Student, StudentListAdapter.
     }
 
     public interface OnStudentClickListener {
-        void onStudentClick(Student student, int position);
+        void onStudentClick(StudentEntity student, int position);
     }
 
     public void setOnStudentClickListener(OnStudentClickListener listener) {

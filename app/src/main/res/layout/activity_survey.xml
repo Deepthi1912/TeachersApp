@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SurveyActivity">
+    tools:context=".ui.SurveyActivity">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/survey_pager"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/survey_fragment"
+        android:name="com.example.teachersapp.ui.SurveyFragment"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/false_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
