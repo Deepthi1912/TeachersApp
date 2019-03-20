@@ -31,6 +31,6 @@ public interface StudentDao {
     void deleteAll();
 
     @Insert
-    void insert(List<StudentEntity> students);
+    void insertAll(List<StudentEntity> students);
 
 }

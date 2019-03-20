@@ -19,13 +19,14 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract StudentDao studentDAO();
 
-    public static AppDatabase getInstance(Context context) {
+    public static AppDatabase getInstance(final Context context) {
         if (instance == null) {
-            synchronized (LOCK) {
+            synchronized (AppDatabase.class) {
                 if (instance == null) {
-                    instance = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)
+                    instance = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, DATABASE_NAME)
                             .fallbackToDestructiveMigration()
-                            .addCallback(roomCallback)
+                            //.addCallback(roomCallback)
                             .build();
                 }
             }
@@ -33,24 +34,24 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
-            new PopulateDbAsyncTask(instance).execute();
-        }
-    };
-
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
-        private StudentDao studentDao;
-
-        public PopulateDbAsyncTask(AppDatabase db) {
-            this.studentDao = db.studentDAO();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // pre-populate database
-            return null;
-        }
-    }
+//    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+//        @Override
+//        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+//            super.onCreate(db);
+//            new PopulateDbAsyncTask(instance).execute();
+//        }
+//    };
+//
+//    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
+//        private StudentDao studentDao;
+//
+//        public PopulateDbAsyncTask(AppDatabase db) {
+//            this.studentDao = db.studentDAO();
+//        }
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            // pre-populate database
+//            return null;
+//        }
+//    }
 }
